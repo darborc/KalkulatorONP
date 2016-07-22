@@ -13,59 +13,6 @@ public class Rownanie {
 		this.doOnp();
 	}
 
-	private void doOnp() {
-		// ArrayList<String> bufor = new ArrayList<String>(); //
-		String odczyt = "";
-		int priorytet;
-		for (int i = 0; i < postacPierwotna.length(); i++) { 
-			int j = i + 1;
-			String znak = postacPierwotna.substring(i, i + 1);
-
-			if (postacPierwotna.charAt(i) >= '0' && postacPierwotna.charAt(i) <= '9') { // jeœli liczba
-
-				odczyt = odczyt + znak;
-
-				if (j < postacPierwotna.length()) { // jesli nie dotarlismy do konca rownania
-					if (postacPierwotna.charAt(j) < '0' || postacPierwotna.charAt(j) > '9') { 
-						stosONP.add(odczyt);
-						odczyt = "";
-					}
-				} else {
-					stosONP.add(odczyt);
-					odczyt = "";
-				}
-			}
-
-			if (operacje.contains(znak)) { // jesli operator
-				priorytet = ustalPriorytet(znak); // aktualny priorytet
-				switch (znak) {
-				case "(":
-					stosPomocniczy.add(znak);
-					break;
-				case "+":
-					this.dopiszOperacje(i, znak, priorytet);
-					break;
-				case "*":
-					this.dopiszOperacje(i, znak, priorytet);
-					break;
-				case "-":
-					this.dopiszOperacje(i, znak, priorytet);
-					break;
-				case "/":
-					this.dopiszOperacje(i, znak, priorytet);
-					break;
-				default:
-					break;
-				}
-
-			}
-
-			if (postacPierwotna.charAt(i) == ' ') {
-				//nic nie rób
-			}
-		}
-		this.oproznijStos();
-	}
 
 	public String toString() {
 		String wyjscie = "";
@@ -73,20 +20,6 @@ public class Rownanie {
 			wyjscie = wyjscie + x + " ";
 		}
 		return wyjscie;
-	}
-
-	private int priorytetStosu() { 
-		int maxPriorytet = 0;
-		int obecnyPriorytet = 0;
-
-		for (String x : stosPomocniczy) {
-			obecnyPriorytet = ustalPriorytet(x);
-			if (obecnyPriorytet > maxPriorytet) {
-				maxPriorytet = obecnyPriorytet;
-			}
-			return maxPriorytet;
-		}
-		return maxPriorytet;
 	}
 
 	public String oblicz() {
@@ -103,7 +36,7 @@ public class Rownanie {
 				skladnik1 = Integer.parseInt(stosONP.get(i));
 				i++;
 			} else {
-				System.out.println(stosONP);
+//				System.out.println(stosONP);
 				switch (stosONP.get(i).charAt(0)) {
 				case '+':
 					wartTymczasowa = skladnik2 + skladnik1;
@@ -221,6 +154,91 @@ public class Rownanie {
 			}
 		}
 		return tylkoLiczby;
+	}
+
+	private int priorytetStosu() { 
+		int maxPriorytet = 0;
+		int obecnyPriorytet = 0;
+
+		for (String x : stosPomocniczy) {
+			obecnyPriorytet = ustalPriorytet(x);
+			if (obecnyPriorytet > maxPriorytet) {
+				maxPriorytet = obecnyPriorytet;
+			}
+			return maxPriorytet;
+		}
+		return maxPriorytet;
+	}
+
+	private void doOnp() {
+		// ArrayList<String> bufor = new ArrayList<String>(); //
+		String odczyt = "";
+		int priorytet;
+		for (int i = 0; i < postacPierwotna.length(); i++) { 
+			int j = i + 1;
+			String znak = postacPierwotna.substring(i, i + 1);
+
+			if (postacPierwotna.charAt(i) >= '0' && postacPierwotna.charAt(i) <= '9') { // jeœli liczba
+
+				odczyt = odczyt + znak;
+
+				if (j < postacPierwotna.length()) { // jesli nie dotarlismy do konca rownania
+					if (postacPierwotna.charAt(j) < '0' || postacPierwotna.charAt(j) > '9') { 
+						stosONP.add(odczyt);
+						odczyt = "";
+					}
+				} else {
+					stosONP.add(odczyt);
+					odczyt = "";
+				}
+			}
+
+			if (operacje.contains(znak)) {// jesli operator
+				if (i == postacPierwotna.length() - 1){
+					System.out.println("B³edne równanie - operator na koñcu");
+					System.exit(0);
+				}
+				if (i == 0) {
+					System.out.println("B³edne równanie - operator na poczatku");
+					System.exit(0);
+				}
+				priorytet = ustalPriorytet(znak); // aktualny priorytet
+				switch (znak) {
+				case "(":
+					stosPomocniczy.add(znak);
+					break;
+				case "+":
+					this.dopiszOperacje(i, znak, priorytet);
+					break;
+				case "*":
+					this.dopiszOperacje(i, znak, priorytet);
+					break;
+				case "-":
+					this.dopiszOperacje(i, znak, priorytet);
+					break;
+				case "/":
+					this.dopiszOperacje(i, znak, priorytet);
+					break;
+				default:
+					break;
+				}
+
+			}
+
+			if (postacPierwotna.charAt(i) == ' ') {
+				if (postacPierwotna.charAt(i - 1) >= '0' && postacPierwotna.charAt(i - 1) <= '9' &&
+						postacPierwotna.charAt(i - 1) >= '0' && postacPierwotna.charAt(i - 1) <= '9'){
+					System.out.println("B³edne równanie - brak znaku operacji");
+					System.exit(0);
+				}
+				if (operacje.contains(postacPierwotna.charAt(i - 1)) && 
+						operacje.contains(postacPierwotna.charAt(i + 1))){
+					System.out.println("B³edne równanie - dwie operacje po sobie");
+					System.exit(0);
+				}
+			}
+		}
+		this.oproznijStos();
 	}
 
 }
