@@ -17,24 +17,16 @@ public class Rownanie {
 		// ArrayList<String> bufor = new ArrayList<String>(); //
 		String odczyt = "";
 		int priorytet;
-		for (int i = 0; i < postacPierwotna.length(); i++) { // petla zczytujaca
-																// po kolei
-																// znaki z
-																// wejscia
+		for (int i = 0; i < postacPierwotna.length(); i++) { 
 			int j = i + 1;
 			String znak = postacPierwotna.substring(i, i + 1);
 
-			if (postacPierwotna.charAt(i) >= '0' && postacPierwotna.charAt(i) <= '9') { // jeœli
-																						// liczba
+			if (postacPierwotna.charAt(i) >= '0' && postacPierwotna.charAt(i) <= '9') { // jeœli liczba
 
 				odczyt = odczyt + znak;
 
-				if (j < postacPierwotna.length()) { // jesli nie dotarlismy do
-													// konca rownania
-					if (postacPierwotna.charAt(j) < '0' || postacPierwotna.charAt(j) > '9') { // sprawdzamy
-																								// czy
-																								// koniec
-																								// liczby
+				if (j < postacPierwotna.length()) { // jesli nie dotarlismy do konca rownania
+					if (postacPierwotna.charAt(j) < '0' || postacPierwotna.charAt(j) > '9') { 
 						stosONP.add(odczyt);
 						odczyt = "";
 					}
@@ -42,7 +34,6 @@ public class Rownanie {
 					stosONP.add(odczyt);
 					odczyt = "";
 				}
-
 			}
 
 			if (operacje.contains(znak)) { // jesli operator
@@ -54,19 +45,15 @@ public class Rownanie {
 				case "+":
 					this.dopiszOperacje(i, znak, priorytet);
 					break;
-
 				case "*":
 					this.dopiszOperacje(i, znak, priorytet);
 					break;
-
 				case "-":
 					this.dopiszOperacje(i, znak, priorytet);
 					break;
-
 				case "/":
 					this.dopiszOperacje(i, znak, priorytet);
 					break;
-
 				default:
 					break;
 				}
@@ -74,9 +61,8 @@ public class Rownanie {
 			}
 
 			if (postacPierwotna.charAt(i) == ' ') {
-
+				//nic nie rób
 			}
-
 		}
 		this.oproznijStos();
 	}
@@ -89,10 +75,7 @@ public class Rownanie {
 		return wyjscie;
 	}
 
-	private int priorytetStosu() { /**
-									 * Pobiera najwyzszy priorytet sposrod
-									 * elementow stosu
-									 */
+	private int priorytetStosu() { 
 		int maxPriorytet = 0;
 		int obecnyPriorytet = 0;
 
@@ -103,7 +86,6 @@ public class Rownanie {
 			}
 			return maxPriorytet;
 		}
-
 		return maxPriorytet;
 	}
 
@@ -113,8 +95,7 @@ public class Rownanie {
 		int skladnik2 = 0;
 		int wartTymczasowa = 0;
 		int i = 0;
-		// String operacja;
-		// int i = 0;
+
 		while (i < stosONP.size() && stosONP.size() > 1) {
 			
 			if (czyLiczba(stosONP.get(i))) {
@@ -224,15 +205,12 @@ public class Rownanie {
 				this.przlozElement();
 			}
 			stosPomocniczy.add(znak);
-		} else if (elem == this.postacPierwotna.length() - 1) { // ostatni
-																// element
+		} else if (elem == this.postacPierwotna.length() - 1) { // ostatni element
 			this.przlozElement();
 			stosPomocniczy.add(znak);
 		} else {
 			stosPomocniczy.add(znak);
 		}
-//		System.out.println("Stos glówny" + stosONP);
-//		System.out.println("Stos pomocniczy" + stosPomocniczy);
 	}
 
 	private Boolean czyLiczba(String param) {
